@@ -1,2 +1,3 @@
 # database_tutorial
-介绍各类常见数据库的数据库的使用。
+
+基于python，介绍常见数据库(MySQL、Redis、Neo4j、Milvus等)的安装与使用。<br>
