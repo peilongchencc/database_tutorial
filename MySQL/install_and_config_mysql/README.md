@@ -4,6 +4,7 @@
 - [install and config mysql](#install-and-config-mysql)
   - [服务器安装MySQL数据库：](#服务器安装mysql数据库)
   - [终端MySQL常用指令(开启、关闭、重启、状态指令)：](#终端mysql常用指令开启关闭重启状态指令)
+  - [查看MySQL最近一次重启时间:](#查看mysql最近一次重启时间)
   - [查看MySQL配置信息：](#查看mysql配置信息)
   - [MySQL密码设置：(root账号)](#mysql密码设置root账号)
   - [如果密码设置好了，但无法登录mysql，信息如下:](#如果密码设置好了但无法登录mysql信息如下)
@@ -56,6 +57,46 @@ service mysql restart
 ```shell
 netstat -ntlp 
 ```
+
+
+## 查看MySQL最近一次重启时间:
+
+终端输入 `mysqladmin -u root -p status`，回车后输入密码将显示最近一次MySQL重启时间(Uptime)。<br>
+
+终端输入 `date` ，可以看到系统当前时间。效果如下:<br>
+
+```log
+root@iZ2:/project/chenpeilong# mysqladmin -u root -p status
+Enter password: 
+Uptime: 169406  Threads: 3  Questions: 989  Slow queries: 0  Opens: 506  Flush tables: 3  Open tables: 425  Queries per second avg: 0.005
+root@iZ2:/project/chenpeilong# date
+Wed Jul 31 02:19:16 PM CST 2024
+```
+
+获取到关键信息后，替换时间字段，运行下列代码可以看到最近一个MySQL重启时间。<br>
+
+```python
+from datetime import datetime, timedelta
+
+# 当前系统时间
+current_time = datetime.strptime("Wed Jul 31 02:19:16 PM CST 2024", "%a %b %d %I:%M:%S %p CST %Y")
+
+# MySQL Uptime in seconds
+uptime_seconds = 169406
+
+# MySQL最近一次重启的时间
+last_restart_time = current_time - timedelta(seconds=uptime_seconds)
+
+print("MySQL最近一次重启时间:", last_restart_time)
+```
+
+终端效果如下:<br>
+
+```log
+(langchain) root@iZ2:/project/chenpeilong# python test_mysql.py 
+MySQL最近一次重启时间: 2024-07-29 15:15:50
+```
+
 
 ## 查看MySQL配置信息：
 
